@@ -1,0 +1,179 @@
+{
+  "indexes": [
+    {
+      "collectionGroup": "activities",
+      "queryScope": "COLLECTION",
+      "fields": [
+        {
+          "fieldPath": "celula",
+          "arrayConfig": "CONTAINS"
+        },
+        {
+          "fieldPath": "deletedAt",
+          "order": "ASCENDING"
+        },
+        {
+          "fieldPath": "createdAt",
+          "order": "DESCENDING"
+        }
+      ]
+    },
+    {
+      "collectionGroup": "activities",
+      "queryScope": "COLLECTION",
+      "fields": [
+        {
+          "fieldPath": "celula.name",
+          "order": "ASCENDING"
+        },
+        {
+          "fieldPath": "deletedAt",
+          "order": "ASCENDING"
+        },
+        {
+          "fieldPath": "createdAt",
+          "order": "DESCENDING"
+        }
+      ]
+    },
+    {
+      "collectionGroup": "activities",
+      "queryScope": "COLLECTION",
+      "fields": [
+        {
+          "fieldPath": "celula.name",
+          "arrayConfig": "CONTAINS"
+        },
+        {
+          "fieldPath": "deletedAt",
+          "order": "ASCENDING"
+        },
+        {
+          "fieldPath": "createdAt",
+          "order": "DESCENDING"
+        }
+      ]
+    },
+    {
+      "collectionGroup": "activities",
+      "queryScope": "COLLECTION",
+      "fields": [
+        {
+          "fieldPath": "deletedAt",
+          "order": "ASCENDING"
+        },
+        {
+          "fieldPath": "createdAt",
+          "order": "DESCENDING"
+        }
+      ]
+    },
+    {
+      "collectionGroup": "banners",
+      "queryScope": "COLLECTION",
+      "fields": [
+        {
+          "fieldPath": "category.position",
+          "order": "ASCENDING"
+        },
+        {
+          "fieldPath": "deletedAt",
+          "order": "ASCENDING"
+        },
+        {
+          "fieldPath": "name",
+          "order": "ASCENDING"
+        }
+      ]
+    },
+    {
+      "collectionGroup": "banners",
+      "queryScope": "COLLECTION",
+      "fields": [
+        {
+          "fieldPath": "deletedAt",
+          "order": "ASCENDING"
+        },
+        {
+          "fieldPath": "name",
+          "order": "ASCENDING"
+        }
+      ]
+    },
+    {
+      "collectionGroup": "brands",
+      "queryScope": "COLLECTION",
+      "fields": [
+        {
+          "fieldPath": "deletedAt",
+          "order": "ASCENDING"
+        },
+        {
+          "fieldPath": "name",
+          "order": "ASCENDING"
+        }
+      ]
+    },
+    {
+      "collectionGroup": "posts",
+      "queryScope": "COLLECTION",
+      "fields": [
+        {
+          "fieldPath": "deletedAt",
+          "order": "ASCENDING"
+        },
+        {
+          "fieldPath": "createdAt",
+          "order": "DESCENDING"
+        }
+      ]
+    },
+    {
+      "collectionGroup": "posts",
+      "queryScope": "COLLECTION",
+      "fields": [
+        {
+          "fieldPath": "deletedAt",
+          "order": "ASCENDING"
+        },
+        {
+          "fieldPath": "type.id",
+          "order": "ASCENDING"
+        },
+        {
+          "fieldPath": "createdAt",
+          "order": "DESCENDING"
+        }
+      ]
+    },
+    {
+      "collectionGroup": "professionals",
+      "queryScope": "COLLECTION",
+      "fields": [
+        {
+          "fieldPath": "deletedAt",
+          "order": "ASCENDING"
+        },
+        {
+          "fieldPath": "name",
+          "order": "ASCENDING"
+        }
+      ]
+    },
+    {
+      "collectionGroup": "tips",
+      "queryScope": "COLLECTION",
+      "fields": [
+        {
+          "fieldPath": "deletedAt",
+          "order": "ASCENDING"
+        },
+        {
+          "fieldPath": "createdAt",
+          "order": "DESCENDING"
+        }
+      ]
+    }
+  ],
+  "fieldOverrides": []
+}
