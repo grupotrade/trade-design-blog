@@ -62,8 +62,6 @@
             </v-list>
         </v-menu> 
         <v-spacer />
-        <v-autocomplete v-model="productSelected" hide-details :items="productList" outlined prepend-inner-icon="mdi-magnify" item-text="name" label="Buscar productos" return-object @change="viewProduct()" @click="listProducts()"></v-autocomplete>
-
         <v-tooltip bottom content-class="bottom" v-if="!this.$vuetify.theme.dark">
             <template v-slot:activator="{ on }">
                 <v-btn icon @click.stop="toggleTheme" v-on="on">
@@ -93,7 +91,6 @@
     <v-app-bar app fixed color="app-bar-site" height="78" dark v-else>
         <CommonTHIcon dark />
         <v-spacer></v-spacer>
-        <v-autocomplete v-model="productSelected" hide-details :items="productList" outlined prepend-inner-icon="mdi-magnify" dense item-text="name" label="Buscar productos" return-object @change="viewProduct()" @click="listProducts()"></v-autocomplete>
         <v-tooltip bottom content-class="bottom" v-if="!this.$vuetify.theme.dark">
             <template v-slot:activator="{ on }">
                 <v-btn icon @click.stop="toggleTheme" v-on="on">
@@ -121,7 +118,6 @@
         <v-app-bar-nav-icon @click.stop="menuMobile = !menuMobile" class="d-xs-block d-md-none" />
     </v-app-bar>
     <DialogsLogin v-model="loginDialog" @openRegister="openRegister" />
-    <ProductsViewProductDialog v-model="viewProductDialog" :product="productSelected" v-if="productSelected != null"  @viewProduct="viewProductR"/>
     <DialogsRegister v-model="registerDialog" />
     <LayoutNotificationsDrawer v-model="notificationDrawer" :notifications="notifications" />
     <LayoutUserOptionsDrawer v-model="userDrawer" :user="user" :userName="user.displayName" :userRole="user.role" v-if="user.displayName" />
@@ -149,31 +145,9 @@ export default {
             notificationDrawer: false,
             notifications: [],
             search: false,
-            viewProductDialog: false,
-            productSelected: null,
-            productList: []
         }
     },
-    computed: {
-        ...mapGetters({
-            products: "products/getProducts",
-        })
-    },
-    mounted() {
-        this.listProducts()
-    },
     methods: {
-        listProducts() {
-            this.$store.dispatch('products/getProducts')
-            this.productList = JSON.parse(JSON.stringify(this.products))
-        },
-        viewProduct() {
-            this.viewProductDialog = true
-        },
-        viewProductR(product) {
-            this.productSelected = product
-            this.viewProductDialog = true
-        },
         openRegister() {
             this.registerDialog = true
         },

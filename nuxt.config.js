@@ -63,7 +63,8 @@ export default {
     '@nuxtjs/toast',
     'vue-scrollto/nuxt',
     'nuxt-material-design-icons-iconfont',
-    '@nuxtjs/firebase'
+    '@nuxtjs/firebase',
+    'vue2-editor/nuxt'
   ],
 
   // Axios module configuration: https://go.nuxtjs.dev/config-axios

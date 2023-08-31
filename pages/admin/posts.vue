@@ -57,7 +57,7 @@
                 </v-skeleton-loader>
             </v-col>
         </v-row>
-        <v-dialog v-model="newPostDialog" width="750px" persistent>
+        <v-dialog v-model="newPostDialog" width="750px" persistent fullscreen>
             <v-toolbar dense flat class="midground">
                 <v-toolbar-title>{{ $t('posts.new_post') }}</v-toolbar-title>
                 <v-spacer></v-spacer>
@@ -94,10 +94,9 @@
                         <v-text-field dense label="Título" v-model="post.title" :rules="rules.required" required outlined
                             color="secondary">
                         </v-text-field>
-                        <p>Sinopis</p>
-                        <client-only>
-                            <VueEditor v-model="post.resume" :editor-toolbar="customToolbar" />
-                        </client-only>
+                        <v-textarea dense label="Resumen" v-model="post.resume" outlined
+                            color="secondary">
+                        </v-textarea>
                         <p class="mt-2">Contenido</p>
                         <client-only>
                             <VueEditor v-model="post.content" :editor-toolbar="customToolbar" />

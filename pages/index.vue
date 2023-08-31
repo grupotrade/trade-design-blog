@@ -1,52 +1,30 @@
 <template>
-<v-container fluid class="py-8">
-    <v-sheet class="mx-4">
-        <BannersListBanners class="mb-4" position="home-top" />
+<v-container class="px-lg-16">
+    <v-sheet class="hero my-4">
+        <BannersListBanners class="mb-4" position="educacion-arriba" />
     </v-sheet>
-     <v-container fluid id="productos" class="px-4">
-        <v-row dense>
-            <v-col cols="12" class="pb-12">
-                <h3 class="primary--text text-center"><span class="secondary--text">Productos</span> destacados</h3>
-            </v-col>
-            <v-col cols="12" lg="3" v-for="item in productsHome" :key="item.name">
-                <v-card elevation="3" shaped class="py-3 ma-2">
-                    <v-img :src="item.images[0]"></v-img>
-                    <v-card-text style="min-height:180px">
-                        <h4 class="pt-3">{{item.name}}</h4>
-                        <p>{{item.description.substring(0, 100)}}...</p>
-                        <!-- <h5 v-if="user.displayName" class="primary--text text-right">${{item.price}}</h5> -->
-                    </v-card-text>
-                    <v-card-actions class="justify-center">
-                        <v-btn color="primary" rounded depressed class="px-4" @click="viewProduct(item)">
-                            Ver más
-                        </v-btn>
-                        <!-- <v-btn color="primary" rounded depressed @click="openLogin" v-else class="px-4">
-                            Iniciar sesión
-                        </v-btn> -->
-                    </v-card-actions>
-                </v-card>
-            </v-col>
-            <!-- <v-slide-group v-model="productSlider" show-arrows class="pa-4" active-class="success">
-            </v-slide-group> -->
-        </v-row>
-    </v-container>
-    <v-container fluid id="marcas" class="px-4">
-        <v-row justify="center" class="mt-10">
-            <v-col cols="12" class="pb-12">
-                <h3 class="primary--text text-center"><span class="secondary--text">Encuentra las</span> mejores marcas</h3>
-            </v-col>
-            <v-col cols="12">
-                <BrandsListBrands />
-            </v-col>
-            <!-- <v-slide-group v-model="slideBrands" class="px-8" show-arrows>
-                <v-slide-item v-for="(item, i) in brands" :key="i" class="pa-1">
-                    <v-img :src="item.img" width="200" class="mx-8"></v-img>
-                </v-slide-item>
-            </v-slide-group>  -->
-        </v-row>
-    </v-container>
-    <DialogsLogin v-model="loginDialog" @openRegister="openRegister" />
-    <DialogsRegister v-model="registerDialog" />
+    <v-row>
+        <v-col cols="12">
+            <h2 class="primary--text my-4">
+                Taller
+            </h2>
+        </v-col>
+    </v-row>
+    <v-row justify="center" dense v-if="loadingPosts">
+        <v-progress-circular indeterminate color="secondary" class="mx-auto my-12"></v-progress-circular>
+    </v-row>
+    <v-row v-else-if="posts.length > 0" dense  class="mt-8 mt-lg-0">
+        <v-col v-for="post in posts.slice(0,limitPosts)" :key="post.id" cols="6" lg="4">
+            <postsActivityCard :post="post" @navigate="navigateActivity(post)" />
+        </v-col>
+        <v-col cols="12" class="text-center" v-if="posts.length > 6 && limitPosts < posts.length">
+            <v-btn depressed rounded color="primary" class="px-16" @click="limitPosts = limitPosts + 6" small>Ver más</v-btn>
+        </v-col>
+    </v-row>
+    <p v-else class="pa-12"> No hay resultados que coincidan con la búsqueda.</p>
+    <v-sheet class="hero my-4">
+        <BannersListBanners class="my-4" position="educacion-abajo" />
+    </v-sheet>
 </v-container>
 </template>
 
@@ -57,42 +35,77 @@ import {
 export default {
     data() {
         return {
-            agenda: null,
-            eventRoute: '',
-            eventRouteNew: '',
-            loginDialog: false,
-            registerDialog: false
+            loadingPosts: false,
+            limitPosts: 6,
+            activePostTypes: [],
+            selectedPostTypes: []
         }
     },
     computed: {
+        ...mapGetters({
+            postTypes: "posts/getPostTypes",
+            posts: "posts/getPosts"
+        }),
         user() {
             return this.$store.state.authUser;
-        }
+        },
+    },
+    mounted() {
+        this.listAllPosts();
     },
     methods: {
-        openRegister() {
-            this.registerDialog = true
+        async listAllPosts() {
+            this.loadingPosts = true
+            this.$store.dispatch('posts/getPostTypes')
+                .then(() => {
+
+                })
+            this.$store.dispatch('posts/getPosts')
+                .then(() => {
+                    this.loadingPosts = false
+                })
         },
-        openLogin() {
-            this.loginDialog = true
-        }
-    }
-}
+        async listPostsByPostType(postType) {
+            // buscar el índice de la categoría seleccionada en el array
+            const index = this.selectedPostTypes.findIndex(item => item.id === postType.id);
+            if (index >= 0) {
+                // si la categoría ya está en el array, eliminarla
+                this.selectedPostTypes.splice(index, 1);
+            } else {
+                // si la categoría no está en el array, agregarla
+                this.selectedPostTypes.push(postType);
+            }
+
+            this.loadingPosts = true;
+            // llamar a la acción del store con todas las categorías seleccionadas
+            const selectedIds = this.selectedPostTypes.map(item => item.id);
+            if (this.selectedPostTypes.length > 0) {
+                this.$store.dispatch('posts/getPostsByPostTypes', selectedIds)
+                    .then(() => {
+                        this.loadingPosts = false;
+                    })
+            } else {
+                this.listAllPosts()
+            }
+            const activeIndex = this.activePostTypes.findIndex(item => item === postType.id);
+            if (activeIndex >= 0) {
+                // si la categoría ya está en el array, eliminarla
+                this.activePostTypes.splice(index, 1);
+            } else {
+                // si la categoría no está en el array, agregarla
+                this.activePostTypes.push(postType.id);
+            }
+        },
+        navigateActivity(post) {
+            this.$router.push('/actividad/' + post.id)
+        },
+        navigatePost(post) {
+            this.$router.push('/post/' + post.id)
+        },
+        handleAutocompleteChange() {
+            this.$refs.celulas.searchInput = '';
+        },
+
+    },
+};
 </script>
-
-<style scoped>
-.hero {
-    background-repeat: no-repeat !important;
-    background-color: var(--v-primary-base) !important;
-    border-radius: 25px;
-    background-position: right !important;
-    background-size: contain !important;
-    min-height: 320px;
-}
-
-.hero-img {
-    position: absolute;
-    width: 540px;
-    margin: -30px 0 0 36px;
-}
-</style>

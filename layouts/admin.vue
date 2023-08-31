@@ -163,11 +163,6 @@ export default {
                     text: 'Usuarios',
                 },
                 {
-                    to: '/admin/products',
-                    icon: 'mdi-shopping-outline',
-                    text: 'Productos',
-                },
-                {
                     to: '/admin/brands',
                     icon: 'mdi-google-fit',
                     text: 'Marcas',
@@ -180,17 +175,7 @@ export default {
                 {
                     to: '/admin/posts',
                     icon: 'mdi-post',
-                    text: 'Biblioteca',
-                },
-                {
-                    to: '/admin/activities',
-                    icon: 'mdi-school',
-                    text: 'Actividades/Cursos',
-                },
-                {
-                    to: '/admin/tips',
-                    icon: 'mdi-lightbulb-on',
-                    text: 'Tips',
+                    text: 'Artículos',
                 }
 
             ]
