@@ -1,5 +1,8 @@
 {
   "projects": {
-    "default": "trade-design"
-  }
+    "blog": "trade-design-blog",
+    "default": "trade-design-blog"
+  },
+  "targets": {},
+  "etags": {}
 }
