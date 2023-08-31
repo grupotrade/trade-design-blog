@@ -18,6 +18,19 @@ $ npm run start
 $ npm run generate
 ```
 
+ENVIRONMENT VARIABLES
+
+FIREBASE_API_KEY = AIzaSyAk1LdEMdoWHxQfQ79h5TJtz_pzOQkngQg
+FIREBASE_AUTH_DOMAIN = trade-design-blog.firebaseapp.com
+FIREBASE_DATABASE_URL = https://trade-design-blog-default-rtdb.firebaseio.com
+FIREBASE_PROJECT_ID = trade-design-blog
+FIREBASE_STORAGE_BUCKET = trade-design-blog.appspot.com
+FIREBASE_MESSAGING_SENDER_ID = 864879933237
+FIREBASE_APP_ID = 1:864879933237:web:09e43f52a9725cfe337e7c
+FIREBASE_MEASUREMENT_ID = G-91PWB5PYJV
+STORAGE_URL = https://firebasestorage.googleapis.com/v0/b/trade-design-blog.appspot.com/o/
+
+
 For detailed explanation on how things work, check out the [documentation](https://nuxtjs.org).
 
 ## Special Directories
