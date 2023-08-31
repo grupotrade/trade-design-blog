@@ -30,7 +30,6 @@ FIREBASE_APP_ID = 1:864879933237:web:09e43f52a9725cfe337e7c
 FIREBASE_MEASUREMENT_ID = G-91PWB5PYJV
 STORAGE_URL = https://firebasestorage.googleapis.com/v0/b/trade-design-blog.appspot.com/o/
 
-
 For detailed explanation on how things work, check out the [documentation](https://nuxtjs.org).
 
 ## Special Directories
