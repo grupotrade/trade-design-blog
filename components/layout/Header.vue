@@ -6,61 +6,17 @@
             <v-list-item exact to="/">
                 <v-list-item-content>
                     <v-list-item-title>
-                        Inicio
+                        Blog
                     </v-list-item-title>
                 </v-list-item-content>
             </v-list-item>
-            <v-list-item exact to="/eshowroom">
-                <v-list-item-content>
-                    <v-list-item-title>
-                        E-showroom
-                    </v-list-item-title>
-                </v-list-item-content>
-            </v-list-item>
-           <v-list-item exact to="/educacion">
-                <v-list-item-title>
-                    <v-icon left>mdi-book-open-variant</v-icon>Blog
-                </v-list-item-title>
-            </v-list-item>
-            <v-list-item exact to="/contenido" v-if="false">
-                <v-list-item-title>
-                    <v-icon left>mdi-youtube</v-icon>Contenidos
-                </v-list-item-title>
-            </v-list-item>
-            <v-list-item exact to="/tips">
-                <v-list-item-title>
-                    <v-icon left>mdi-lightbulb-on</v-icon>Tips
-                </v-list-item-title>
-            </v-list-item>
+        
         </v-list>
     </v-navigation-drawer>
     <v-app-bar app fixed color="app-bar-site" height="78" dark v-if="!$vuetify.breakpoint.xs">
         <a href="/">
             <CommonTHLogo dark class="mr-16" /></a>
-        <v-btn text dark class="mx-2" href="/">Inicio</v-btn>
-        <v-btn text dark class="mx-2" href="/eshowroom">E-showroom</v-btn>
-        <v-menu open-on-hover bottom offset-y>
-            <template v-slot:activator="{ on, attrs }">
-                <v-btn text dark class="mx-2" v-on="on">Blog</v-btn>
-            </template>
-            <v-list>
-                <v-list-item to="/educacion" class="primary--text">
-                    <v-list-item-title>
-                        <v-icon left color="primary">mdi-book-open-variant</v-icon>Actividades Educación Contínua
-                    </v-list-item-title>
-                </v-list-item>
-                <v-list-item to="/contenido" class="primary&#45;&#45;text" v-if="false">
-                    <v-list-item-title>
-                        <v-icon left color="primary">mdi-youtube</v-icon>Contenido
-                    </v-list-item-title>
-                </v-list-item>
-                <v-list-item to="/tips" class="primary--text">
-                    <v-list-item-title>
-                        <v-icon left color="primary">mdi-lightbulb-on</v-icon>Tips
-                    </v-list-item-title>
-                </v-list-item>
-            </v-list>
-        </v-menu> 
+        <v-btn text dark class="mx-2" href="/">Blog</v-btn>
         <v-spacer />
         <v-tooltip bottom content-class="bottom" v-if="!this.$vuetify.theme.dark">
             <template v-slot:activator="{ on }">

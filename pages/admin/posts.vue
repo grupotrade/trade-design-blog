@@ -99,7 +99,7 @@
                         </v-textarea>
                         <p class="mt-2">Contenido</p>
                         <client-only>
-                            <VueEditor v-model="post.content" :editor-toolbar="customToolbar" />
+                            <VueEditor v-model="post.content"  />
                         </client-only>
                         <h4 class="body-1 my-2">Imagen</h4>
                         <v-row>
@@ -119,7 +119,7 @@
                 </v-card-text>
             </v-card>
         </v-dialog>
-        <v-dialog v-model="editPostDialog" width="750px" persistent>
+        <v-dialog v-model="editPostDialog" width="750px" persistent fullscreen>
             <v-toolbar dense flat class="midground">
                 <v-toolbar-title>{{ $t('posts.edit_post') }}</v-toolbar-title>
                 <v-spacer></v-spacer>

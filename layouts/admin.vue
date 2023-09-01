@@ -162,16 +162,16 @@ export default {
                     icon: 'mdi-account-multiple',
                     text: 'Usuarios',
                 },
-                {
-                    to: '/admin/brands',
-                    icon: 'mdi-google-fit',
-                    text: 'Marcas',
-                },
-                {
-                    to: '/admin/banners',
-                    icon: 'mdi-image-multiple',
-                    text: 'Banners',
-                },
+                // {
+                //     to: '/admin/brands',
+                //     icon: 'mdi-google-fit',
+                //     text: 'Marcas',
+                // },
+                // {
+                //     to: '/admin/banners',
+                //     icon: 'mdi-image-multiple',
+                //     text: 'Banners',
+                // },
                 {
                     to: '/admin/posts',
                     icon: 'mdi-post',
