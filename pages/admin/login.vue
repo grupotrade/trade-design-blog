@@ -1,18 +1,17 @@
 <template>
 <v-container class="fill-height">
     <v-row align="center" justify="center" dense>
-        <v-col cols="12" sm="8" md="4" align="center">
-            <CommonTHLogo />
-
-            <v-card  class="elevation-4 text-center" color="white" light tile>
+        <v-col cols="12" sm="8" md="3" align="center">
+            <CommonTDLogoDark />
+            <v-card  class="elevation-4 text-center" color="white" light>
                 <v-card-text class="px-8 pb-4">
-                    <h3 class="primary--text mb-8 mt-4">Bienvenidos</h3>
+                    <h3 class="primary_text--text mb-8 mt-4">Bienvenidos</h3>
                     <v-form>
                         <v-text-field label="Email" outlined color="primary" name="login" prepend-inner-icon="mdi-account" type="text" v-model="auth.email"></v-text-field>
                         <v-text-field label="Contraseña" outlined color="primary" name="password" :append-icon="showPass ? 'mdi-eye' : 'mdi-eye-off'" prepend-inner-icon="mdi-lock" :type="showPass ? 'text' : 'password'" @click:append="showPass = !showPass" v-model="auth.password"></v-text-field>
-                        <v-btn color="primary" @click="login" depressed large block>Entrar</v-btn>
+                        <v-btn color="secondary" @click="login" depressed large block>Entrar</v-btn>
                     </v-form>
-                    <v-btn color="primary" class="my-4" text @click="forgotPassword" small>¿Olvidaste tu contraseña?</v-btn>
+                    <v-btn color="secondary" class="my-4" text @click="forgotPassword" small>¿Olvidaste tu contraseña?</v-btn>
                     <!-- <p class="mb-0">¿No tenés código de acceso?</p>
                     <v-btn color="black" text @click="$router.push('/register')" depressed small>
                         Pedilo aquí</v-btn> -->
@@ -20,7 +19,7 @@
 
             </v-card>
             <v-sheet color="transparent" class="mt-6 login-logos">
-                <img src="/img/THLogo_dark.svg" width="150" /> <span class="body-2 secondary_text_dark--text">by</span> <img src="/img/TDLogo_dark.svg" width="150" />
+              <img src="/img/TDLogo_dark.svg" width="120" />
             </v-sheet>
             <v-snackbar :timeout="4000" v-model="snackbar" absolute bottom center>
                 {{ snackbarText }}

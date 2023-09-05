@@ -13,6 +13,7 @@ export default {
         }
     },
     created() {
+        if(process.client) {
         const theme = localStorage.getItem("useDarkTheme");
         if (theme) {
             if (theme == "true") {
@@ -20,7 +21,7 @@ export default {
                     this.toggleThemeDark()
                 }, 500)
             }
-        }
+        }}
     },
     methods: {
         toggleThemeDark() {
@@ -32,7 +33,7 @@ export default {
 <style>
 
 .bg-image {
-  background: var(--v-primary-base)  !important;
+  background: var(--v-background-base)  !important;
 }
 </style>
 

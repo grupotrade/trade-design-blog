@@ -22,7 +22,7 @@ export default {
       { name: 'format-detection', content: 'telephone=no' }
     ],
     link: [
-      { rel: 'icon', type: 'image/x-icon', href: '/img/THIcon.svg' }
+      { rel: 'icon', type: 'image/x-icon', href: '/img/favicon.png' }
     ]
   },
 

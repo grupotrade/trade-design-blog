@@ -2,18 +2,12 @@
 <v-container>
     <v-row dense>
         <v-col>
-            <v-sheet class="pa-10">
-
+            <v-sheet class="pa-10" color="transparent">
                 <h3 class="primary--text py-10">Bienvenidos</h3>
                 <h2 class="primary--text py-10">Gestion de Contenidos</h2>
-                <p>
-                    
-                </p>
-
             </v-sheet>
         </v-col>
-        <v-col cols="5">
-            
+        <v-col cols="5">            
         </v-col>
     </v-row>
 </v-container>

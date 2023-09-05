@@ -1,5 +1,5 @@
 <template>
-    <v-container fluid>
+    <v-container>
         <v-row align="center">
             <v-col cols="6">
                 <h2>{{ $t("posts.title") }}</h2>
@@ -94,12 +94,11 @@
                         <v-text-field dense label="Título" v-model="post.title" :rules="rules.required" required outlined
                             color="secondary">
                         </v-text-field>
-                        <v-textarea dense label="Resumen" v-model="post.resume" outlined
-                            color="secondary">
+                        <v-textarea dense label="Resumen" v-model="post.resume" outlined color="secondary">
                         </v-textarea>
                         <p class="mt-2">Contenido</p>
                         <client-only>
-                            <VueEditor v-model="post.content"  />
+                            <VueEditor v-model="post.content" />
                         </client-only>
                         <h4 class="body-1 my-2">Imagen</h4>
                         <v-row>
@@ -149,13 +148,12 @@
                                     return-object :rules="rules.required" required outlined color="secondary"></v-select>
                             </v-col>
                             <v-col>
-                                <v-text-field dense label="Título" v-model="post.title" :rules="rules.required" required outlined
-                            color="secondary">
-                        </v-text-field>
+                                <v-text-field dense label="Título" v-model="post.title" :rules="rules.required" required
+                                    outlined color="secondary">
+                                </v-text-field>
                             </v-col>
                         </v-row>
-                        <v-textarea dense label="Resumen" v-model="post.resume" outlined
-                            color="secondary">
+                        <v-textarea dense label="Resumen" v-model="post.resume" outlined color="secondary">
                         </v-textarea>
                         <p class="mt-2">Contenido</p>
                         <client-only>
@@ -197,6 +195,7 @@ export default {
             editPostDialog: false,
             editPostForm: false,
             iconMinimizeNewPost: false,
+            iconMinimizeEditPost: false,
             activePost: null,
             processingImg: false,
             postsHeaders: [{
@@ -277,26 +276,32 @@ export default {
         }
     },
     mounted() {
-        this.listPosts();
+        this.fetchPosts()
+        this.fetchPostTypes()
     },
     methods: {
-        async listPosts() {
+        async fetchPosts() {
             this.loading = true
             this.$store.dispatch('posts/getPosts')
                 .then(() => {
                     this.loading = false
                 })
         },
-        newPost() {
+        fetchPostTypes() {
             this.$store.dispatch('posts/getPostTypes')
                 .then(() => {
-                    this.newPostDialog = true;
                 })
-
+        },
+        newPost() {
+            this.newPostDialog = true;
         },
         minimizeNewPost() {
             this.newPostDialog = false;
             this.iconMinimizeNewPost = true
+        },
+        minimizeEditPost() {
+            this.editPostDialog = false;
+            this.iconMinimizeEditPost = true
         },
         maximizeNewPost() {
             this.newPostDialog = true;
@@ -349,7 +354,7 @@ export default {
                         position: "top-right",
                         duration: 2000
                     })
-                    this.listPosts();
+                    this.fetchPosts();
                 })
         },
         editPost(item) {
@@ -374,7 +379,7 @@ export default {
                     img_color: this.post.img_color,
                 })
                 .then(() => {
-                    this.listPosts();
+                    this.fetchPosts();
                     this.editPostDialog = false;
                     this.post = {
                         title: "",
@@ -398,7 +403,7 @@ export default {
                     .doc(doc)
                     .delete()
                     .then(() => {
-                        this.listPosts();
+                        this.fetchPosts();
                     })
                     .catch((error) => {
                         console.log(error);
@@ -424,6 +429,7 @@ export default {
                     };
                     this.post.imgPath = filePath
                     await this.$fire.storage.ref()
+                    .child('posts')
                         .child(filePath)
                         .put(this.post.img, metadata);
                 }
@@ -445,4 +451,5 @@ export default {
 .posts {
     max-width: 1240px !important;
     margin: 150px auto 0 !important;
-}</style>
+}
+</style>

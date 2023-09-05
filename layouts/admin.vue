@@ -1,7 +1,7 @@
 <template>
-<v-app class="app-bg">
-    <v-app-bar color="app-bar-admin" dark app>
-        <CommonTHLogo dark /> 
+<v-app class="background-index">
+    <v-app-bar color="app-bar-td" dark app>
+        <CommonTDLogoDark class="mt-2" /> 
         <v-toolbar-title>
             {{ breadcrum }}
         </v-toolbar-title>
@@ -66,7 +66,7 @@
             </v-badge>
         </v-btn>
     </v-app-bar>
-    <v-navigation-drawer v-model="menuDrawer" :mini-variant="miniVariant" app fixed floating class="drawer-th pt-2" :mobile-breakpoint="400">
+    <v-navigation-drawer v-model="menuDrawer" :mini-variant="miniVariant" app fixed floating class="drawer-td pt-2" :mobile-breakpoint="400">
         <perfect-scrollbar style="height:100%">
             <v-row no-gutters>
                 <v-col :cols="miniVariant ? '12' : '4'" class="text-center py-8">
@@ -123,9 +123,8 @@
         </perfect-scrollbar>
     </v-navigation-drawer>
     <v-main>
-        <v-container class="pa-12">
+        <v-container class="pa-0" fluid>
             <Nuxt />
-
         </v-container>
     </v-main>
     <IssuesNewIssueDialog v-model="newIssueDialog" :user="user" :type="issueType" @minimize="minimizeNewIssue()" @cancel="cancelNewIssue()" />
@@ -167,11 +166,11 @@ export default {
                 //     icon: 'mdi-google-fit',
                 //     text: 'Marcas',
                 // },
-                // {
-                //     to: '/admin/banners',
-                //     icon: 'mdi-image-multiple',
-                //     text: 'Banners',
-                // },
+                {
+                    to: '/admin/banners',
+                    icon: 'mdi-image-multiple',
+                    text: 'Banners',
+                },
                 {
                     to: '/admin/posts',
                     icon: 'mdi-post',
@@ -243,12 +242,11 @@ export default {
 </script>
 
 <style>
-.app-bar-th {
-    background: rgba(88, 24, 224, 0.7) !important;
+.app-bar-td {
+    background: var(--v-background-base)  !important;
 }
-
-.drawer-th {
-    background: linear-gradient(134.74deg, #5818E0 20.62%, #5022B4 100%) !important;
+.drawer-td {
+    background: var(--v-background-base)  !important;
     box-shadow: 4px 4px 4px rgba(0, 0, 0, 0.25) !important;
 }
 </style>

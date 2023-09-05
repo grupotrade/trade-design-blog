@@ -2,19 +2,15 @@
 <v-container class="pt-lg-16 px-lg-16">
     <v-row>
         <v-col>
-            <v-sheet class="rounded grey lighten-3 py-2 px-3 elevation-1 primary--text" v-if="post.type">
-                <a href="/educacion">
-                    <v-icon left color="primary">mdi-book-open</v-icon>Biblioteca
-                </a> > {{ post.type.name }}
-            </v-sheet>
             <article v-if="post">
-                <header>
-                    <h2 class="py-6 primary--text">{{ post.title }}</h2>
-                </header>
-                <p class="primary--text"> <span v-if="post.author">
-                        <v-icon small color="primary" class="mx-1">mdi-account</v-icon>Autor: {{ post.author }}
-                    </span>
+                <p class="secondary--text" v-if="post.type">
+                        {{ post.type.name }}
+                   
                 </p>
+                <header>
+                    <h2 class="pb-6 black--text">{{ post.title }}</h2>
+                </header>
+               
                 <v-img :src="post.image" class="rounded" contain />
                 <p class="py-3" v-html="post.content"></p>
             </article>
