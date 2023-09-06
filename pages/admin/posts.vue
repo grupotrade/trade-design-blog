@@ -375,8 +375,7 @@ export default {
                     content: this.post.content,
                     resume: this.post.resume,
                     type: this.post.type,
-                    img: this.post.imgPath,
-                    img_color: this.post.img_color,
+                    img: this.post.imgPath
                 })
                 .then(() => {
                     this.fetchPosts();
