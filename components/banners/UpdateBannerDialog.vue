@@ -196,8 +196,7 @@ export default {
                     await this.$fire.storage.ref()
                     .child('banners')
                         .child(filePath)
-                        .put(this.bannerEditable.image);
-                        console.log(filePath)
+                        .put(file);
                 }
             } catch (e) {
                 console.error(e);

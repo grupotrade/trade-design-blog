@@ -20,12 +20,12 @@
                             <v-btn text class="white--text" 
                                 href="https://api.whatsapp.com/send?phone=5491126117588&text=Hola,%20estoy%20visitando%20Trade%20Design,%20me%20gustar%C3%ADa%20saber%20m%C3%A1s%20acerca%20de%20sus%20productos%20y%20servicios"
                                 target="_blank">
-                                <v-icon size="small">mdi-whatsapp</v-icon><span v-show="!mobile">+54 9 11 2 611
+                                <v-icon size="small">mdi-whatsapp</v-icon><span v-show="!$vuetify.breakpoint.xs ">+54 9 11 2 611
                                     7588</span>
                             </v-btn>
                             <v-btn text class="white--text" href="mailto:produccion@trade-design.com.ar">
                                 <v-icon size="small">mdi-email</v-icon><span
-                                    v-show="!mobile">produccion@trade-design.com.ar</span>
+                                    v-show="!$vuetify.breakpoint.xs ">produccion@trade-design.com.ar</span>
                             </v-btn>
                         </v-col>
                         <v-col class="text-right pt-2">
@@ -49,7 +49,7 @@
                     </v-row>
                 </v-container>
             </v-sheet>
-            <v-app-bar class="menu-bar mt-10" absolute v-if="!mobile">
+            <v-app-bar class="menu-bar mt-10" absolute v-if="!$vuetify.breakpoint.xs    ">
                 <v-container class="header pa-0 mt-n6">
                     <v-row dense>
                         <v-col cols="3">
@@ -61,7 +61,7 @@
                             <v-btn text class="white--text" to="#plataforma">Plataforma</v-btn>
                             <v-btn text class="white--text" to="#diseño">Diseño</v-btn>
                             <v-btn text class="white--text" to="#nosotros">Nosotros</v-btn>
-                            <v-btn depressed rounded="pill" color="secondary" to="#contacto">Contacto</v-btn>
+                            <v-btn depressed rounded color="secondary" to="#contacto">Contacto</v-btn>
                         </v-col>
                     </v-row>
                 </v-container>
@@ -70,7 +70,7 @@
                 <v-container class="mt-4">
                     <v-row dense>
                         <v-col cols="6">
-                            <LogoDark class="ml-3" />
+                            <CommonTDLogoDark class="ml-3" />
                         </v-col>
                         <v-col class="text-right">
                             <v-app-bar-nav-icon text @click.stop="menuMobile = !menuMobile"

@@ -162,7 +162,7 @@
                         <h4 class="body-1 my-2">Imagen</h4>
                         <v-row>
                             <v-col>
-                                <v-file-input v-model="post.img" :placeholder="$t('upload')" @change="fileInput"
+                                <v-file-input v-model="post.img" :placeholder="$t('upload')" @change="fileInput" outlined
                                     :disabled="processingImg">
                                     <template v-slot:append-outer>
                                         <v-progress-circular v-if="processingImg" color="grey" indeterminate small />
