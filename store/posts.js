@@ -65,11 +65,13 @@ export const actions = {
             ref.doc(payload).get().then((doc) => {
                 if (doc.exists) {
                     commit('setPost', doc.data())
+                    resolve()
                 } else {
                     // doc.data() will be undefined in this case
                     console.log("No such document!");
                 }
             }).catch((error) => {
+                reject()
                 console.log("Error getting document:", error);
             })
         })

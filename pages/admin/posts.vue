@@ -344,7 +344,7 @@ export default {
             const payload = this.post
             payload.createdBy = this.user
             payload.createdAt = dateTime.toISOString(),
-                payload.deletedAt = null
+            payload.deletedAt = null
             this.$store.dispatch('posts/createPost', payload)
                 .then(() => {
                     this.loading = false
@@ -359,7 +359,7 @@ export default {
         },
         editPost(item) {
             this.editPostDialog = true
-            this.post = item
+            this.post = this.deepCopy(item)
             this.activePost = item.id
         },
         editPostFb(event) {
@@ -384,11 +384,9 @@ export default {
                         title: "",
                         author: "",
                         type: "",
+                        resume: "",
                         content: "",
-                        link_url: "",
-                        link_text: "",
                         img: null,
-                        img_color: "",
                     }
                 })
                 .catch((error) => {

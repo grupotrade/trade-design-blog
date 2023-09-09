@@ -11,7 +11,7 @@
             <p class="mt-1">Seleccionar categoría:</p>
         </v-col>
         <v-col cols="12" lg="8">
-            <v-autocomplete v-model="postTypeSelected" :label="$vuetify.breakpoint.xs ? 'Seleccionar categoría:' : ''" ref="postTypes" :items="filteredPostTypes" item-text="name" item-value="name"
+            <v-autocomplete v-model="selectedPostTypes" :label="$vuetify.breakpoint.xs ? 'Seleccionar categoría:' : ''" ref="postTypes" :items="filteredPostTypes" item-text="name" item-value="id"
             dense solo chips clearable deletable-chips multiple small-chips rounded @click:clear="fetchPosts"></v-autocomplete>
 
         </v-col>
@@ -47,9 +47,8 @@ export default {
         return {
             loadingPosts: false,
             limitPosts: 6,
-            activePostTypes: [],
             selectedPostTypes: [],
-            postTypeSelected: null
+            postsTotal : []
         }
     },
     computed: {
@@ -61,7 +60,7 @@ export default {
             return this.$store.state.authUser;
         },
         uniquePostTypes() {
-            return new Set(this.posts.map(post => post.type.name))
+            return new Set(this.postsTotal.map(post => post.type.name))
         },
         filteredPostTypes() {
             return this.postTypes.filter(post => this.uniquePostTypes.has(post.name))
@@ -78,40 +77,18 @@ export default {
                 .then(() => {
 
                 })
-            this.$store.dispatch('posts/getPosts')
-                .then(() => {
-                    this.loadingPosts = false
-                })
         },
-        async listPostsByPostType(postType) {
-            // buscar el índice de la categoría seleccionada en el array
-            const index = this.selectedPostTypes.findIndex(item => item.id === postType.id);
-            if (index >= 0) {
-                // si la categoría ya está en el array, eliminarla
-                this.selectedPostTypes.splice(index, 1);
-            } else {
-                // si la categoría no está en el array, agregarla
-                this.selectedPostTypes.push(postType);
-            }
-
-            this.loadingPosts = true;
-            // llamar a la acción del store con todas las categorías seleccionadas
-            const selectedIds = this.selectedPostTypes.map(item => item.id);
+        async listPostsByPostType() {
+            this.loadingPosts = true
             if (this.selectedPostTypes.length > 0) {
-                this.$store.dispatch('posts/getPostsByPostTypes', selectedIds)
+                let payload = this.selectedPostTypes
+                console.log(payload)
+                this.$store.dispatch('posts/getPostsByPostTypes', payload)
                     .then(() => {
-                        this.loadingPosts = false;
+                        this.loadingPosts = false
                     })
             } else {
                 this.fetchPosts()
-            }
-            const activeIndex = this.activePostTypes.findIndex(item => item === postType.id);
-            if (activeIndex >= 0) {
-                // si la categoría ya está en el array, eliminarla
-                this.activePostTypes.splice(index, 1);
-            } else {
-                // si la categoría no está en el array, agregarla
-                this.activePostTypes.push(postType.id);
             }
         },
         async fetchPosts() {
@@ -119,6 +96,7 @@ export default {
             this.$store.dispatch('posts/getPosts')
                 .then(() => {
                     this.loadingPosts = false
+                    this.postsTotal = this.deepCopy(this.posts)
                 })
         },
         navigatePost(post) {

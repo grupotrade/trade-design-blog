@@ -56,12 +56,12 @@
                             <CommonTDLogoDark />
                         </v-col>
                         <v-col class="text-right">
-                            <v-btn text class="white--text" to="#eventos">Eventos</v-btn>
-                            <v-btn text class="white--text" to="#viajes">Viajes</v-btn>
-                            <v-btn text class="white--text" to="#plataforma">Plataforma</v-btn>
-                            <v-btn text class="white--text" to="#diseño">Diseño</v-btn>
-                            <v-btn text class="white--text" to="#nosotros">Nosotros</v-btn>
-                            <v-btn depressed rounded color="secondary" to="#contacto">Contacto</v-btn>
+                            <v-btn text class="white--text" href="https://trade-design.com.ar/#eventos">Eventos</v-btn>
+                            <v-btn text class="white--text" href="https://trade-design.com.ar/#viajes">Viajes</v-btn>
+                            <v-btn text class="white--text" href="https://trade-design.com.ar/#plataforma">Plataforma</v-btn>
+                            <v-btn text class="white--text" href="https://trade-design.com.ar/#diseño">Diseño</v-btn>
+                            <v-btn text class="white--text" href="https://trade-design.com.ar/#nosotros">Nosotros</v-btn>
+                            <v-btn depressed rounded color="secondary" href="https://trade-design.com.ar/#contacto">Contacto</v-btn>
                         </v-col>
                     </v-row>
                 </v-container>

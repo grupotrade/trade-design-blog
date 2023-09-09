@@ -1,45 +1,38 @@
 <template>
-<v-container class="pt-lg-16 px-lg-16">
-    <v-row>
-        <v-col>
-            <article v-if="post">
-                <p class="secondary--text" v-if="post.type">
-                        {{ post.type.name }}
-                   
-                </p>
-                <header>
-                    <h2 class="pb-6 black--text">{{ post.title }}</h2>
-                </header>
-               
-                <v-img :src="post.image" class="rounded" contain />
-                <p class="py-3" v-html="post.content"></p>
-            </article>
-        </v-col>
-        <v-col lg="3" cols="12">
-            <v-skeleton-loader type="card" :loading="loadingRelated" v-if="relatedPosts.length > 0">
-                <h4 class="mt-4 mb-6 primary--text">Artículos relacionados</h4>
-                <v-card class="pa-4 mb-2" v-for="post in relatedPosts" :key="post.id" rounded @click="navigatePost(post)">
-                    <p class="primary--text">{{ $moment(post.createdAt).format('DD/MM/YYYY')  }} | {{ post.author }}</p>
-                    <h6 class="primary--text">
-                        {{ post.title }}
-                    </h6>
-                </v-card>
-                <!-- <v-carousel v-model="related" :show-arrows="false" hide-delimiter-background>
-                    <v-carousel-item :key="post.id">
-                        <v-card class="pa-4 mb-2"  v-for="post in relatedPosts" rounded @click="navigatePost(post)">
-                            <h6 class="primary--text">{{ $moment(post.createdAt).format('DD/MM/YYYY')  }} | {{ post.author }}</h6>
-                            <h4 class="primary--text">
-                                {{ post.title }}
-                            </h4>
-                        </v-card>
-                    </v-carousel-item>
-                </v-carousel> -->
-            </v-skeleton-loader>
-        </v-col>
-    </v-row>
+    <v-container class="pt-lg-16 px-lg-16">
+        <v-row>
+            <v-col>
+                <v-skeleton-loader type="article" :loading="loadingPost">
+                    <article v-if="post">
+                        <v-sheet color="" class="secondary secondary--text lighten-4 pa-3 rounded-xl body-1"
+                            v-if="post.type">
+                            <v-btn to="../" text small rounded color="secondary" class="mr-2">
+                                <v-icon small>mdi-chevron-left</v-icon> Volver
+                            </v-btn> {{ post.type.name }}
+                        </v-sheet>
+                        <header>
+                            <h1 class="py-8 black--text text-center">{{ post.title }}</h1>
+                        </header>
 
-    <!-- <h3 class="mt-10 mb-6" v-if="posts">Más publicaciones</h3> -->
-</v-container>
+                        <v-img :src="$config.storage + 'posts%2F' + post.img + '?alt=media'" class="rounded" contain />
+                        <p class="py-3" v-html="post.content"></p>
+                    </article>
+                </v-skeleton-loader>
+            </v-col>
+            <v-col cols="12">
+                <v-skeleton-loader type="card" :loading="loadingRelated" v-if="relatedPosts.length > 0">
+                    <h4 class="mt-4 mb-6 primary--text">Artículos relacionados</h4>
+                    <v-row>
+                        <v-col v-for="post in relatedPosts" :key="post.id" cols="6" lg="4">
+            <PostsPostCard :post="post" @navigate="navigatePost(post)" />
+        </v-col>
+                    </v-row>
+                </v-skeleton-loader>
+            </v-col>
+        </v-row>
+
+        <!-- <h3 class="mt-10 mb-6" v-if="posts">Más publicaciones</h3> -->
+    </v-container>
 </template>
 
 <script>
@@ -51,6 +44,7 @@ export default {
         return {
             content: "",
             selectPost: '',
+            loadingPost: true,
             loadingRelated: false
         }
     },
@@ -64,8 +58,8 @@ export default {
         }
     },
     mounted() {
-        this.$store.commit('posts/setPosts',[])
-        this.$store.commit('posts/setPost',[])
+        this.$store.commit('posts/setPosts', [])
+        this.$store.commit('posts/setPost', [])
         this.getPost()
     },
     methods: {
@@ -73,6 +67,7 @@ export default {
             let postId = this.$route.params.id
             this.$store.dispatch('posts/getPostbyId', postId)
                 .then(() => {
+                    this.loadingPost = false
                     this.getRelatedPosts()
                 })
                 .catch(err => {
@@ -89,7 +84,9 @@ export default {
         },
         async getRelatedPosts() {
             this.loadingRelated = true
-            this.$store.dispatch('posts/getPostsByPostType', this.post.type.id)
+            const postType = []
+            postType.push(this.post.type.id)
+            this.$store.dispatch('posts/getPostsByPostTypes', postType)
                 .then(() => {
                     this.loadingRelated = false
                 }).catch(err => {
