@@ -4,6 +4,13 @@
             <v-col cols="6">
                 <h2>{{ $t("posts.title") }}</h2>
             </v-col>
+        </v-row>
+        <v-row>
+            <v-col cols="4">
+                <v-text-field v-model="searchPosts" :label="$t('search')" solo hide-details append-icon="mdi-table-search"
+                    color="secondary">
+                </v-text-field>
+            </v-col>
             <v-col class="text-right">
                 <v-tooltip bottom content-class="bottom">
                     <template v-slot:activator="{ on }">
@@ -25,12 +32,9 @@
                 <v-skeleton-loader class="mx-auto" type=" table: table-heading, table-thead, table-tbody, table-tfoot"
                     :loading="loading">
 
-                    <v-data-table :items="posts" :headers="postsHeaders" hide-default-footer>
+                    <v-data-table :items="posts" :headers="postsHeaders" hide-default-footer :search="searchPosts">
                         <template v-slot:item.createdAt="{ item }">
                             {{ $moment(item.createdAt).format('DD/MM/YYYY') }}
-                        </template>
-                        <template v-slot:item.type="{ item }">
-                            {{ item.type.name }}
                         </template>
                         <template v-slot:item.content="{ item }">
                             {{ item.content.substring(0, 55) }}...
@@ -57,126 +61,8 @@
                 </v-skeleton-loader>
             </v-col>
         </v-row>
-        <v-dialog v-model="newPostDialog" width="750px" persistent fullscreen>
-            <v-toolbar dense flat class="midground">
-                <v-toolbar-title>{{ $t('posts.new_post') }}</v-toolbar-title>
-                <v-spacer></v-spacer>
-                <v-tooltip bottom content-class="bottom">
-                    <template v-slot:activator="{ on }">
-                        <v-btn depressed icon v-on="on" @click="minimizeNewPost()">
-                            <v-icon>mdi-window-minimize</v-icon>
-                        </v-btn>
-                    </template>
-                    <span>{{ $t('minimize') }}</span>
-                </v-tooltip>
-                <v-tooltip bottom content-class="bottom">
-                    <template v-slot:activator="{ on }">
-                        <v-btn depressed icon v-on="on" @click="cancelNewPost()">
-                            <v-icon>mdi-window-close</v-icon>
-                        </v-btn>
-                    </template>
-                    <span>{{ $t('cancel') }}</span>
-                </v-tooltip>
-            </v-toolbar>
-            <v-card flat tile class="pt-4">
-                <v-card-text>
-                    <v-form v-model="newPostForm" method="POST" @submit="createPost">
-                        <v-row>
-                            <v-col>
-                                <v-select dense label="Categoría" v-model="post.type" :items="types" item-text="name"
-                                    return-object :rules="rules.required" required outlined color="secondary"></v-select>
-                            </v-col>
-                            <v-col>
-                                <v-text-field dense label="Autor" v-model="post.author" outlined color="secondary">
-                                </v-text-field>
-                            </v-col>
-                        </v-row>
-                        <v-text-field dense label="Título" v-model="post.title" :rules="rules.required" required outlined
-                            color="secondary">
-                        </v-text-field>
-                        <v-textarea dense label="Resumen" v-model="post.resume" outlined color="secondary">
-                        </v-textarea>
-                        <p class="mt-2">Contenido</p>
-                        <client-only>
-                            <VueEditor v-model="post.content" />
-                        </client-only>
-                        <h4 class="body-1 my-2">Imagen</h4>
-                        <v-row>
-                            <v-col>
-                                <v-file-input dense v-model="post.img" :placeholder="$t('upload')" outlined
-                                    @change="fileInput" :disabled="processingImg">
-                                    <template v-slot:append-outer>
-                                        <v-progress-circular v-if="processingImg" color="grey" indeterminate small />
-                                    </template>
-                                </v-file-input>
-                            </v-col>
-                        </v-row>
-                        <v-btn depressed color="primary" :disabled="!newPostForm" type="submit">
-                            {{ $t('save') }}
-                        </v-btn>
-                    </v-form>
-                </v-card-text>
-            </v-card>
-        </v-dialog>
-        <v-dialog v-model="editPostDialog" width="750px" persistent fullscreen>
-            <v-toolbar dense flat class="midground">
-                <v-toolbar-title>{{ $t('posts.edit_post') }}</v-toolbar-title>
-                <v-spacer></v-spacer>
-                <v-tooltip bottom content-class="bottom">
-                    <template v-slot:activator="{ on }">
-                        <v-btn depressed icon v-on="on" @click="minimizeEditPost()">
-                            <v-icon>mdi-window-minimize</v-icon>
-                        </v-btn>
-                    </template>
-                    <span>{{ $t('minimize') }}</span>
-                </v-tooltip>
-                <v-tooltip bottom content-class="bottom">
-                    <template v-slot:activator="{ on }">
-                        <v-btn depressed icon v-on="on" @click="cancelEditPost()">
-                            <v-icon>mdi-window-close</v-icon>
-                        </v-btn>
-                    </template>
-                    <span>{{ $t('cancel') }}</span>
-                </v-tooltip>
-            </v-toolbar>
-            <v-card flat tile class="pt-4">
-                <v-card-text>
-                    <v-form v-model="editPostForm">
-                        <v-row>
-                            <v-col>
-                                <v-select dense label="Categoría" v-model="post.type" :items="types" item-text="name"
-                                    return-object :rules="rules.required" required outlined color="secondary"></v-select>
-                            </v-col>
-                            <v-col>
-                                <v-text-field dense label="Título" v-model="post.title" :rules="rules.required" required
-                                    outlined color="secondary">
-                                </v-text-field>
-                            </v-col>
-                        </v-row>
-                        <v-textarea dense label="Resumen" v-model="post.resume" outlined color="secondary">
-                        </v-textarea>
-                        <p class="mt-2">Contenido</p>
-                        <client-only>
-                            <VueEditor v-model="post.content" :editor-toolbar="customToolbar" />
-                        </client-only>
-                        <h4 class="body-1 my-2">Imagen</h4>
-                        <v-row>
-                            <v-col>
-                                <v-file-input v-model="post.img" :placeholder="$t('upload')" @change="fileInput" outlined
-                                    :disabled="processingImg">
-                                    <template v-slot:append-outer>
-                                        <v-progress-circular v-if="processingImg" color="grey" indeterminate small />
-                                    </template>
-                                </v-file-input>
-                            </v-col>
-                        </v-row>
-                        <v-btn depressed color="primary" :disabled="!editPostForm" @click="editPostFb">
-                            {{ $t('save') }}
-                        </v-btn>
-                    </v-form>
-                </v-card-text>
-            </v-card>
-        </v-dialog>
+        <PostsNewPostDialog v-model="newPostDialog"  @finish="fetchPosts()" @minimize="minimizeNewPost()" />
+        <PostsUpdatePostDialog v-model="editPostDialog" v-if="editPostDialog" :post="postEditable" :id="activePost"  @finish="fetchPosts()"  @minimize="minimizeEditPost" />
     </v-container>
 </template>
 
@@ -188,16 +74,16 @@ export default {
     layout: 'admin',
     data() {
         return {
+            searchPosts: '',
             content: null,
             loading: false,
-            newPostForm: false,
             newPostDialog: false,
             editPostDialog: false,
-            editPostForm: false,
             iconMinimizeNewPost: false,
             iconMinimizeEditPost: false,
             activePost: null,
             processingImg: false,
+            postEditable: '',
             postsHeaders: [{
                 text: "Fecha",
                 align: "start",
@@ -205,7 +91,7 @@ export default {
             }, {
                 text: "Tipo",
                 align: "start",
-                value: "type",
+                value: "type.name",
             }, {
                 text: "Título",
                 align: "start",
@@ -222,16 +108,6 @@ export default {
                 value: "actions",
             },
             ],
-            post: {
-                title: "",
-                type: "",
-                content: "",
-                resume: "",
-                active: true,
-                img: null,
-                imgPath: "",
-
-            },
             rules: {
                 required: [(v) => !!v || this.$t("rules.required")],
             },
@@ -306,93 +182,11 @@ export default {
         maximizeNewPost() {
             this.newPostDialog = true;
         },
-        cancelNewPost() {
-            this.$dialog.show({
-                title: `${this.$t('confirm_dialog.cancel_new_post')}`,
-                text: `${this.$t('confirm_dialog.confirm_cancel')} ${this.$t('confirm_dialog.new_post')}`,
-                buttons: [{
-                    text: 'Sí, cancelar',
-                    color: 'primary',
-                    handle: () => {
-                        this.$dialog.hide()
-                        this.iconMinimizeNewPost = false
-                        this.newPostDialog = false
-                    }
-                }]
-            })
-        },
-        cancelEditPost() {
-            this.$dialog.show({
-                title: `${this.$t('confirm_dialog.cancel_edit_post')}`,
-                text: `${this.$t('confirm_dialog.confirm_cancel')} ${this.$t('confirm_dialog.edit_post')}`,
-                buttons: [{
-                    text: 'Sí, cancelar',
-                    color: 'primary',
-                    handle: () => {
-                        this.$dialog.hide()
-                        this.iconMinimizeEditPost = false
-                        this.editPostDialog = false
-                    }
-                }]
-            })
-        },
-        createPost(event) {
-            this.loading = true
-            const dateTime = new Date()
-            this.post.img = this.post.imgPath
-            event.preventDefault();
-            const payload = this.post
-            payload.createdBy = this.user
-            payload.createdAt = dateTime.toISOString(),
-            payload.deletedAt = null
-            this.$store.dispatch('posts/createPost', payload)
-                .then(() => {
-                    this.loading = false
-                    this.newPostDialog = false
-                    this.$toasted.success('Artículo creado', {
-                        theme: "bubble",
-                        position: "top-right",
-                        duration: 2000
-                    })
-                    this.fetchPosts();
-                })
-        },
         editPost(item) {
             this.editPostDialog = true
-            this.post = this.deepCopy(item)
+            this.postEditable = this.deepCopy(item)
             this.activePost = item.id
-        },
-        editPostFb(event) {
-            event.preventDefault();
-            if (this.post.imgPath == null) {
-                this.post.imgPath = this.post.img
-            }
-            this.$fire.firestore
-                .collection("posts")
-                .doc(this.activePost)
-                .update({
-                    title: this.post.title,
-                    content: this.post.content,
-                    resume: this.post.resume,
-                    type: this.post.type,
-                    img: this.post.imgPath
-                })
-                .then(() => {
-                    this.fetchPosts();
-                    this.editPostDialog = false;
-                    this.post = {
-                        title: "",
-                        author: "",
-                        type: "",
-                        resume: "",
-                        content: "",
-                        img: null,
-                    }
-                })
-                .catch((error) => {
-                    console.log(error);
-                });
-        },
+        },        
         deletePost(doc) {
             if (confirm("¿Está seguro?")) {
                 this.$fire.firestore
@@ -426,7 +220,7 @@ export default {
                     };
                     this.post.imgPath = filePath
                     await this.$fire.storage.ref()
-                    .child('posts')
+                        .child('posts')
                         .child(filePath)
                         .put(this.post.img, metadata);
                 }

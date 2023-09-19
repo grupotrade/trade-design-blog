@@ -462,7 +462,7 @@
         "edit_banner": "la edición del banner?",
         "cancel_new_post" : "Cancelar nuevo artículo",
         "cancel_edit_post" : "Cancelar edición de artículo",
-        "new_post": "el nuevo artículo?",
+        "new_post": "¿Desea descartar los cambios?",
         "edit_post": "editar el artículo?",
         "cancel_new_activity" : "Cancelar nueva actividad",
         "cancel_edit_activity" : "Cancelar edición de la actividad",

@@ -15,6 +15,7 @@
                         </header>
 
                         <v-img :src="$config.storage + 'posts%2F' + post.img + '?alt=media'" class="rounded" contain />
+                        <p class="py-3 semi" v-html="post.resume"></p>
                         <p class="py-3" v-html="post.content"></p>
                     </article>
                 </v-skeleton-loader>

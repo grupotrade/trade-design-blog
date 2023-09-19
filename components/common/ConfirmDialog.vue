@@ -6,7 +6,7 @@
       <v-card-text v-html="text"></v-card-text>
       <v-card-actions>
         <v-spacer></v-spacer>
-        <v-btn depressed color="grey" dark @click="show = false" text v-if="!hidecancel"> {{$t('cancel')}}</v-btn>
+        <v-btn depressed color="grey" dark @click="show = false" text v-if="!hidecancel"> {{$t('no')}}</v-btn>
         <v-btn depressed v-for="(btn, index) in buttons" :key="index" :color="btn.color" v-html="btn.text" @click="btn.handle"></v-btn>
       </v-card-actions>
     </v-card>
