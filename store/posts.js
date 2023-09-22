@@ -19,7 +19,26 @@ export const getters = {
 export const actions = {
     async getPosts({commit}) {
         return new Promise((resolve, reject) => {
-        this.$fire.firestore.collection('posts').where('deletedAt', '==', null).orderBy("createdAt", "desc")
+        this.$fire.firestore.collection('posts').orderBy("createdAt", "desc")
+        .get().then(function (querySnapshot) {
+            let result = []
+            querySnapshot.forEach(function (doc) {
+                let data
+                data = doc.data()
+                data.id = doc.id
+                result.push(data)
+            })
+            commit('setPosts', result)
+            resolve(result)
+            })
+            .catch((error) => {
+                console.log(error);
+            });
+        })
+    },
+    async getActivePosts({commit}) {
+        return new Promise((resolve, reject) => {
+        this.$fire.firestore.collection('posts').where('active', '==', true).orderBy("createdAt", "desc")
         .get().then(function (querySnapshot) {
             let result = []
             querySnapshot.forEach(function (doc) {

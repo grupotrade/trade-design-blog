@@ -13,8 +13,9 @@
                         <header>
                             <h1 class="py-8 black--text text-center">{{ post.title }}</h1>
                         </header>
-
-                        <v-img :src="$config.storage + 'posts%2F' + post.img + '?alt=media'" class="rounded" contain />
+                        <div class="d-flex justify-center">
+                        <v-img :src="$config.storage + 'posts%2F' + post.img + '?alt=media'" class="rounded" height="350px" contain />
+                    </div>
                         <p class="py-3 semi" v-html="post.resume"></p>
                         <p class="py-3" v-html="post.content"></p>
                     </article>

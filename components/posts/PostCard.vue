@@ -1,5 +1,5 @@
 <template>
-<v-card @click="navigateActivity(post)" :class="related ? 'activity-card-related' : 'fill-height activity-card'" :width="width">
+<v-card @click="navigateActivity(post)" :class="related ? 'post-card-related' : 'fill-height post-card'" :width="width">
     <v-img :src="$config.storage + 'posts%2F' + post.img + '?alt=media'" cover :height="imgHeight"  v-if="post.img && post.img != ''">
         <v-chip color="secondary" small class="ma-2" v-if="$moment().diff(post.createdAt,'days') <= 7">NUEVO</v-chip>
     </v-img>

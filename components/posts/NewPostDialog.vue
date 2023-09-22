@@ -23,6 +23,8 @@
         <v-card flat tile class="pt-4">
             <v-card-text>
                 <v-form v-model="newPostForm" method="POST" @submit="createPost">
+                    <v-skeleton-loader v-if="saving" type="card, article"></v-skeleton-loader>
+                    <div v-else>
                     <v-row>
                         <v-col>
                             <v-select dense label="Categoría *" v-model="post.type" :items="types" item-text="name"
@@ -52,8 +54,9 @@
                                 </template>
                             </v-file-input>
                         </v-col>
-                    </v-row>
-                    <v-row dense>
+                    </v-row>                   
+                </div>
+                <v-row dense>
                         <v-col class="text-right">
                             <v-btn depressed color="primary" :disabled="!newPostForm || post.content == ''" type="submit"
                                 :loading="saving">

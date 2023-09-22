@@ -30,6 +30,8 @@
     "publish": "Publicar",
     "send": "Enviar",
     "sended" : "Enviado",
+    "enable" : "Activar",
+    "disable" : "Desactivar",
     "select": "Seleccionar",
     "select_multiple": "Selección múltiple",
     "attach": "Adjuntar",

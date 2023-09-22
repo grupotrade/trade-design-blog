@@ -25,30 +25,30 @@
                 <v-form v-model="editPostForm">
                     <v-row>
                         <v-col>
-                            <v-select dense label="Categoría" v-model="post.type" :items="types" item-text="name"
+                            <v-select dense label="Categoría" v-model="postEditable.type" :items="types" item-text="name"
                                 return-object :rules="rules.required" required outlined color="secondary"></v-select>
                         </v-col>
                         <v-col>
-                            <v-text-field dense label="Autor" v-model="post.author" outlined color="secondary">
+                            <v-text-field dense label="Autor" v-model="postEditable.author" outlined color="secondary">
                             </v-text-field>
                         </v-col>
 
                     </v-row>
                     <v-col>
-                        <v-text-field dense label="Título" v-model="post.title" :rules="rules.required" required outlined
+                        <v-text-field dense label="Título" v-model="postEditable.title" :rules="rules.required" required outlined
                             color="secondary">
                         </v-text-field>
                     </v-col>
-                    <v-textarea dense label="Resumen" v-model="post.resume" outlined color="secondary">
+                    <v-textarea dense label="Resumen" v-model="postEditable.resume" outlined color="secondary">
                     </v-textarea>
                     <p class="mt-2">Contenido</p>
                     <client-only>
-                        <VueEditor v-model="post.content" :editor-toolbar="customToolbar" />
+                        <VueEditor v-model="postEditable.content" :editor-toolbar="customToolbar" />
                     </client-only>
                     <h4 class="body-1 my-2">Imagen</h4>
                     <v-row>
                         <v-col>
-                            <v-file-input v-model="post.img" :placeholder="$t('upload')" @change="fileInput" outlined
+                            <v-file-input v-model="postEditable.img" :placeholder="$t('upload')" @change="fileInput" outlined
                                 :disabled="processingImg">
                                 <template v-slot:append-outer>
                                     <v-progress-circular v-if="processingImg" color="grey" indeterminate small />
@@ -58,8 +58,8 @@
                     </v-row>
                     <v-row dense>
                         <v-col class="text-right">
-                            <v-btn depressed color="primary" :disabled="!editPostForm || post.content == ''"
-                                @click="editPostFb">
+                            <v-btn depressed color="primary" :disabled="!editPostForm || postEditable.content == ''"
+                                @click="updatePost">
                                 {{ $t('save') }}
                             </v-btn>
                         </v-col>
@@ -171,25 +171,25 @@ export default {
                 },],
             });
         },
-        editPostFb(event) {
+        updatePost(event) {
             event.preventDefault();
-            if (this.post.imgPath == null) {
-                this.post.imgPath = this.post.img
+            if (this.postEditable.imgPath == null) {
+                this.postEditable.imgPath = this.postEditable.img
             }
             this.$fire.firestore
                 .collection("posts")
                 .doc(this.id)
                 .update({
-                    title: this.post.title,
-                    content: this.post.content,
-                    resume: this.post.resume,
-                    type: this.post.type,
-                    img: this.post.imgPath
+                    title: this.postEditable.title,
+                    content: this.postEditable.content,
+                    resume: this.postEditable.resume,
+                    type: this.postEditable.type,
+                    img: this.postEditable.imgPath
                 })
                 .then(() => {
-                    this.fetchPosts();
+                    this.$emit('finish');
                     this.editPostDialog = false;
-                    this.post = {
+                    this.postEditable = {
                         title: "",
                         author: "",
                         type: "",
@@ -214,16 +214,16 @@ export default {
                         this.fileURL = fr.result;
                     });
                     const imgData = new FormData();
-                    imgData.append("image", this.post.img);
+                    imgData.append("image", this.postEditable.img);
                     const filePath = `${Date.now()}-${file.name}`;
                     const metadata = {
-                        contentType: this.post.img.type
+                        contentType: this.postEditable.img.type
                     };
-                    this.post.imgPath = filePath
+                    this.postEditable.imgPath = filePath
                     await this.$fire.storage.ref()
                         .child('posts')
                         .child(filePath)
-                        .put(this.post.img, metadata);
+                        .put(this.postEditable.img, metadata);
                 }
             } catch (e) {
                 console.error(e);

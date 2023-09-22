@@ -37,7 +37,7 @@
                             {{ $moment(item.createdAt).format('DD/MM/YYYY') }}
                         </template>
                         <template v-slot:item.content="{ item }">
-                            {{ item.content.substring(0, 55) }}...
+                            {{ item.content.substring(0, 75) }}...
                         </template>
                         <template v-slot:item.actions="{ item }">
                             <v-tooltip top>
@@ -48,21 +48,29 @@
                                 </template>
                                 <span>{{ $t("edit") }}</span>
                             </v-tooltip>
-                            <v-tooltip top>
+                            <v-tooltip top v-if="item.active">
                                 <template v-slot:activator="{ on }">
-                                    <v-btn icon v-on="on" @click="deletePost(item.id)">
-                                        <v-icon>mdi-delete</v-icon>
+                                    <v-btn icon v-on="on" @click="disablePost(item.id)">
+                                        <v-icon>mdi-eye-outline</v-icon>
                                     </v-btn>
                                 </template>
-                                <span>{{ $t("delete") }}</span>
+                                <span>{{ $t("disable") }}</span>
+                            </v-tooltip>
+                            <v-tooltip top v-else>
+                                <template v-slot:activator="{ on }">
+                                    <v-btn icon v-on="on" @click="enablePost(item.id)">
+                                        <v-icon>mdi-eye-off-outline</v-icon>
+                                    </v-btn>
+                                </template>
+                                <span>{{ $t("enable") }}</span>
                             </v-tooltip>
                         </template>
                     </v-data-table>
                 </v-skeleton-loader>
             </v-col>
         </v-row>
-        <PostsNewPostDialog v-model="newPostDialog"  @finish="fetchPosts()" @minimize="minimizeNewPost()" />
-        <PostsUpdatePostDialog v-model="editPostDialog" v-if="editPostDialog" :post="postEditable" :id="activePost"  @finish="fetchPosts()"  @minimize="minimizeEditPost" />
+        <PostsNewPostDialog v-model="newPostDialog"  @finish="fetchPosts()" @minimize="minimizeNewPost()" :user="user" />
+        <PostsUpdatePostDialog v-model="editPostDialog" v-if="editPostDialog" :post="postEditable" :id="activePost" :user="user"  @finish="fetchPosts()"  @minimize="minimizeEditPost" />
     </v-container>
 </template>
 
@@ -187,12 +195,30 @@ export default {
             this.postEditable = this.deepCopy(item)
             this.activePost = item.id
         },        
-        deletePost(doc) {
+        disablePost(id) {
             if (confirm("¿Está seguro?")) {
                 this.$fire.firestore
                     .collection("posts")
-                    .doc(doc)
-                    .delete()
+                    .doc(id)
+                .update({
+                    active:false,
+                })
+                    .then(() => {
+                        this.fetchPosts();
+                    })
+                    .catch((error) => {
+                        console.log(error);
+                    });
+            }
+        },
+        enablePost(id) {
+            if (confirm("¿Está seguro?")) {
+                this.$fire.firestore
+                    .collection("posts")
+                    .doc(id)
+                .update({
+                    active: true,
+                })
                     .then(() => {
                         this.fetchPosts();
                     })

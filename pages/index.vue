@@ -22,7 +22,7 @@
     <v-row justify="center" dense v-if="loadingPosts">
         <v-progress-circular indeterminate color="secondary" class="mx-auto my-12"></v-progress-circular>
     </v-row>
-    <v-row v-else-if="posts.length > 0" dense  class="mt-8 mt-lg-0">
+    <v-row v-else-if="posts.length > 0" class="mt-4 mt-lg-2">
         <v-col v-for="post in posts.slice(0,limitPosts)" :key="post.id" cols="6" lg="4">
             <PostsPostCard :post="post" @navigate="navigatePost(post)" />
         </v-col>
@@ -93,7 +93,7 @@ export default {
         },
         async fetchPosts() {
             this.loadingPosts = true
-            this.$store.dispatch('posts/getPosts')
+            this.$store.dispatch('posts/getActivePosts')
                 .then(() => {
                     this.loadingPosts = false
                     this.postsTotal = this.deepCopy(this.posts)
