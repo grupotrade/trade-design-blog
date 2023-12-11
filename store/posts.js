@@ -59,7 +59,7 @@ export const actions = {
         commit('setPosts', []);
         return new Promise((resolve, reject) => {
           this.$fire.firestore.collection('posts')
-            .where('deletedAt', '==', null)
+            .where('active', '==', true)
             .where('type.id', 'in', postTypeIds) // buscar en varias categorías
             .orderBy('createdAt', 'desc')
             .get()

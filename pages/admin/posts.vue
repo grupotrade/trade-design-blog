@@ -6,10 +6,18 @@
             </v-col>
         </v-row>
         <v-row>
-            <v-col cols="4">
-                <v-text-field v-model="searchPosts" :label="$t('search')" solo hide-details append-icon="mdi-table-search"
-                    color="secondary">
-                </v-text-field>
+            <v-col cols="6">
+                <v-row dense>
+                    <v-col cols="8">
+                        <v-text-field v-model="searchPosts" :label="$t('search')" solo hide-details
+                            append-icon="mdi-table-search" color="secondary">
+                        </v-text-field>
+                    </v-col>
+                    <v-col>
+                        <v-switch dense v-model="showDisabled" class="body-2" label="Mostrar inactivos"></v-switch>
+
+                    </v-col>
+                </v-row>
             </v-col>
             <v-col class="text-right">
                 <v-tooltip bottom content-class="bottom">
@@ -31,8 +39,7 @@
             <v-col cols="12">
                 <v-skeleton-loader class="mx-auto" type=" table: table-heading, table-thead, table-tbody, table-tfoot"
                     :loading="loading">
-
-                    <v-data-table :items="posts" :headers="postsHeaders" hide-default-footer :search="searchPosts">
+                    <v-data-table :items="filteredPosts" :headers="postsHeaders" :search="searchPosts" :item-class="rowClass">
                         <template v-slot:item.createdAt="{ item }">
                             {{ $moment(item.createdAt).format('DD/MM/YYYY') }}
                         </template>
@@ -69,8 +76,9 @@
                 </v-skeleton-loader>
             </v-col>
         </v-row>
-        <PostsNewPostDialog v-model="newPostDialog"  @finish="fetchPosts()" @minimize="minimizeNewPost()" :user="user" />
-        <PostsUpdatePostDialog v-model="editPostDialog" v-if="editPostDialog" :post="postEditable" :id="activePost" :user="user"  @finish="fetchPosts()"  @minimize="minimizeEditPost" />
+        <PostsNewPostDialog v-model="newPostDialog" @finish="fetchPosts()" @minimize="minimizeNewPost()" :user="user" />
+        <PostsUpdatePostDialog v-model="editPostDialog" v-if="editPostDialog" :post="postEditable" :id="activePost"
+            :user="user" @finish="fetchPosts()" @minimize="minimizeEditPost" />
     </v-container>
 </template>
 
@@ -90,6 +98,7 @@ export default {
             iconMinimizeNewPost: false,
             iconMinimizeEditPost: false,
             activePost: null,
+            showDisabled: false,
             processingImg: false,
             postEditable: '',
             postsHeaders: [{
@@ -157,6 +166,13 @@ export default {
         }),
         user() {
             return this.$store.state.authUser;
+        },
+        filteredPosts() {
+            if (this.showDisabled) {
+                return this.posts;
+            } else {
+                return this.posts.filter(post => post.active);
+            }
         }
     },
     mounted() {
@@ -194,15 +210,15 @@ export default {
             this.editPostDialog = true
             this.postEditable = this.deepCopy(item)
             this.activePost = item.id
-        },        
+        },
         disablePost(id) {
             if (confirm("¿Está seguro?")) {
                 this.$fire.firestore
                     .collection("posts")
                     .doc(id)
-                .update({
-                    active:false,
-                })
+                    .update({
+                        active: false,
+                    })
                     .then(() => {
                         this.fetchPosts();
                     })
@@ -216,9 +232,9 @@ export default {
                 this.$fire.firestore
                     .collection("posts")
                     .doc(id)
-                .update({
-                    active: true,
-                })
+                    .update({
+                        active: true,
+                    })
                     .then(() => {
                         this.fetchPosts();
                     })
@@ -255,7 +271,13 @@ export default {
             } finally {
                 this.processingImg = false;
             }
-        }
+        },
+        rowClass(item) {
+                if (!item.active) {
+                    const rowClass = 'grey--text grey lighten-4'
+                    return rowClass
+                }
+        },
     },
 };
 </script>

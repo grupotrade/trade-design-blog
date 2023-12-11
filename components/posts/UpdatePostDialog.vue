@@ -25,7 +25,7 @@
                 <v-form v-model="editPostForm">
                     <v-row>
                         <v-col>
-                            <v-select dense label="Categoría" v-model="postEditable.type" :items="types" item-text="name"
+                            <v-select dense label="Categoría *" v-model="postEditable.type" :items="types" item-text="name"
                                 return-object :rules="rules.required" required outlined color="secondary"></v-select>
                         </v-col>
                         <v-col>
@@ -34,28 +34,32 @@
                         </v-col>
 
                     </v-row>
-                    <v-col>
-                        <v-text-field dense label="Título" v-model="postEditable.title" :rules="rules.required" required outlined
-                            color="secondary">
-                        </v-text-field>
-                    </v-col>
+                    <v-text-field dense label="Título *" v-model="postEditable.title" :rules="rules.required" required
+                        outlined color="secondary">
+                    </v-text-field>
                     <v-textarea dense label="Resumen" v-model="postEditable.resume" outlined color="secondary">
                     </v-textarea>
-                    <p class="mt-2">Contenido</p>
+                    <p class="mt-2">Contenido *</p>
                     <client-only>
-                        <VueEditor v-model="postEditable.content" :editor-toolbar="customToolbar" />
+                        <VueEditor v-model="postEditable.content" @text-change="updateEditorContent" />
                     </client-only>
                     <h4 class="body-1 my-2">Imagen</h4>
                     <v-row>
                         <v-col>
-                            <v-file-input v-model="postEditable.img" :placeholder="$t('upload')" @change="fileInput" outlined
-                                :disabled="processingImg">
+                            <v-file-input v-model="postEditable.img" :placeholder="$t('upload')" @change="fileInput"
+                                outlined :disabled="processingImg">
                                 <template v-slot:append-outer>
                                     <v-progress-circular v-if="processingImg" color="grey" indeterminate small />
                                 </template>
                             </v-file-input>
                         </v-col>
                     </v-row>
+                    <v-dialog v-model="saving" width="300px">
+                        <v-card flat class="pa-8 text-center">
+                            <h4>Guardando artículo...</h4>
+                            <v-progress-circular indeterminate></v-progress-circular>
+                        </v-card>
+                    </v-dialog>
                     <v-row dense>
                         <v-col class="text-right">
                             <v-btn depressed color="primary" :disabled="!editPostForm || postEditable.content == ''"
@@ -97,6 +101,7 @@ export default {
             processingImg: false,
             saving: false,
             editPostForm: false,
+            postEditable: {},
             fileURL: null,
             progress: 0,
             newImagePath: null,
@@ -137,20 +142,17 @@ export default {
     computed: {
         show: {
             get() {
+                this.postEditable = this.deepCopy(this.post)
                 return this.value
+        
             },
-            set(val) {
+            set(val) {                
                 this.$emit("modified", val);
             }
         },
         ...mapGetters({
             types: "posts/getPostTypes"
-        }),
-        postEditable: {
-            get() {
-                return this.deepCopy(this.post)
-            },
-        }
+        })       
     },
     methods: {
         minimizeEditPost() {
@@ -172,6 +174,7 @@ export default {
             });
         },
         updatePost(event) {
+            this.saving = true
             event.preventDefault();
             if (this.postEditable.imgPath == null) {
                 this.postEditable.imgPath = this.postEditable.img
@@ -187,8 +190,8 @@ export default {
                     img: this.postEditable.imgPath
                 })
                 .then(() => {
+                    this.saving = false
                     this.$emit('finish');
-                    this.editPostDialog = false;
                     this.postEditable = {
                         title: "",
                         author: "",
@@ -197,6 +200,7 @@ export default {
                         content: "",
                         img: null,
                     }
+                    this.show = false;
                 })
                 .catch((error) => {
                     console.log(error);

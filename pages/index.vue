@@ -23,7 +23,7 @@
         <v-progress-circular indeterminate color="secondary" class="mx-auto my-12"></v-progress-circular>
     </v-row>
     <v-row v-else-if="posts.length > 0" class="mt-4 mt-lg-2">
-        <v-col v-for="post in posts.slice(0,limitPosts)" :key="post.id" cols="6" lg="4">
+        <v-col v-for="post in posts.slice(0,limitPosts)" :key="post.id" cols="12" lg="4">
             <PostsPostCard :post="post" @navigate="navigatePost(post)" />
         </v-col>
         <v-col cols="12" class="text-center" v-if="posts.length > 6 && limitPosts < posts.length">

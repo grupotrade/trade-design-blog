@@ -1,7 +1,7 @@
 <template>
 <v-container class="fill-height">
     <v-row align="center" justify="center" dense>
-        <v-col cols="12" sm="8" md="3" align="center">
+        <v-col cols="12" sm="8" md="4" align="center">
             <CommonTDLogoDark />
             <v-card  class="elevation-4 text-center" color="white" light>
                 <v-card-text class="px-8 pb-4">

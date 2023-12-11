@@ -23,8 +23,6 @@
         <v-card flat tile class="pt-4">
             <v-card-text>
                 <v-form v-model="newPostForm" method="POST" @submit="createPost">
-                    <v-skeleton-loader v-if="saving" type="card, article"></v-skeleton-loader>
-                    <div v-else>
                     <v-row>
                         <v-col>
                             <v-select dense label="Categoría *" v-model="post.type" :items="types" item-text="name"
@@ -54,8 +52,13 @@
                                 </template>
                             </v-file-input>
                         </v-col>
-                    </v-row>                   
-                </div>
+                    </v-row>          
+                    <v-dialog v-model="saving" width="300px">
+                        <v-card flat class="pa-8 text-center">
+                           <h4>Guardando artículo...</h4> 
+                            <v-progress-circular indeterminate></v-progress-circular>
+                        </v-card>
+                    </v-dialog>         
                 <v-row dense>
                         <v-col class="text-right">
                             <v-btn depressed color="primary" :disabled="!newPostForm || post.content == ''" type="submit"
@@ -153,7 +156,6 @@ export default {
         }
     },
     methods: {
-
         minimizeNewPostDialog() {
             this.$emit("minimize");
             this.show = false;
@@ -184,7 +186,7 @@ export default {
             this.$store.dispatch('posts/createPost', payload)
                 .then(() => {
                     this.saving = false
-                    this.newPostDialog = false
+                    this.show = false
                     this.$toasted.success('Artículo creado', {
                         theme: "bubble",
                         position: "top-right",

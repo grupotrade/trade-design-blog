@@ -16,15 +16,15 @@
     <v-sheet color="secondary" elevation="0" id="top">
                 <v-container class="header pa-0">
                     <v-row dense>
-                        <v-col>
-                            <v-btn text class="white--text" 
+                        <v-col class="pt-2 pl-2" cols="8">
+                            <v-btn text class="white--text" :icon="$vuetify.breakpoint.xs" :small="$vuetify.breakpoint.xs" depressed
                                 href="https://api.whatsapp.com/send?phone=5491126117588&text=Hola,%20estoy%20visitando%20Trade%20Design,%20me%20gustar%C3%ADa%20saber%20m%C3%A1s%20acerca%20de%20sus%20productos%20y%20servicios"
                                 target="_blank">
-                                <v-icon size="small">mdi-whatsapp</v-icon><span v-show="!$vuetify.breakpoint.xs ">+54 9 11 2 611
+                                <v-icon>mdi-whatsapp</v-icon><span v-show="!$vuetify.breakpoint.xs ">+54 9 11 2 611
                                     7588</span>
                             </v-btn>
-                            <v-btn text class="white--text" href="mailto:produccion@trade-design.com.ar">
-                                <v-icon size="small">mdi-email</v-icon><span
+                            <v-btn text class="white--text" href="mailto:produccion@trade-design.com.ar"  :icon="$vuetify.breakpoint.xs" :small="$vuetify.breakpoint.xs" depressed>
+                                <v-icon>mdi-email</v-icon><span
                                     v-show="!$vuetify.breakpoint.xs ">produccion@trade-design.com.ar</span>
                             </v-btn>
                         </v-col>
@@ -49,7 +49,7 @@
                     </v-row>
                 </v-container>
             </v-sheet>
-            <v-app-bar class="menu-bar mt-10" absolute v-if="!$vuetify.breakpoint.xs    ">
+            <v-app-bar class="menu-bar mt-11" absolute v-if="!$vuetify.breakpoint.xs    ">
                 <v-container class="header pa-0 mt-n6">
                     <v-row dense>
                         <v-col cols="3">
@@ -66,8 +66,8 @@
                     </v-row>
                 </v-container>
             </v-app-bar>
-            <v-app-bar class="menu-bar mt-11" fixed absolute v-else>
-                <v-container class="mt-4">
+            <v-app-bar class="menu-bar mt-9" fixed absolute v-else>
+                <v-container class="mt-n6 mt-lg-4">
                     <v-row dense>
                         <v-col cols="6">
                             <CommonTDLogoDark class="ml-3" />
