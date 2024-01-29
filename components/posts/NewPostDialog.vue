@@ -42,10 +42,20 @@
                     <client-only>
                         <VueEditor v-model="post.content" />
                     </client-only>
-                    <h4 class="body-1 my-2">Imagen</h4>
+                   
                     <v-row dense>
                         <v-col>
+                            <h4 class="body-1 my-2">Imagen artículo</h4>
                             <v-file-input dense v-model="post.img" :placeholder="$t('upload')" outlined @change="fileInput"
+                                :disabled="processingImg">
+                                <template v-slot:append-outer>
+                                    <v-progress-circular v-if="processingImg" color="grey" indeterminate small />
+                                </template>
+                            </v-file-input>
+                        </v-col>
+                        <v-col>
+                            <h4 class="body-1 my-2">Miniatura</h4>
+                            <v-file-input dense v-model="post.thumbImg" :placeholder="$t('upload')" outlined @change="thumbFileInput"
                                 :disabled="processingImg">
                                 <template v-slot:append-outer>
                                     <v-progress-circular v-if="processingImg" color="grey" indeterminate small />
@@ -108,6 +118,7 @@ export default {
             processingImg: false,
             saving: false,
             fileURL: null,
+            thumbfileURL: null,
             progress: 0,
             newPostForm: false,
             post: {
@@ -201,7 +212,8 @@ export default {
                         active: true,
                         img: null,
                         imgPath: "",
-
+                        thumbImg: null,
+                        thumbImgPath: ""
                     },
                         this.$emit('finish');
                 })
@@ -228,6 +240,35 @@ export default {
                         .child('posts')
                         .child(filePath)
                         .put(this.post.img, metadata);
+                }
+            } catch (e) {
+                console.error(e);
+            } finally {
+                this.processingImg = false;
+            }
+        },
+        async thumbFileInput(file) {
+            try {
+                if (file && file.name) {
+                    this.processingImg = true;
+                    const fr = new FileReader();
+                    fr.readAsDataURL(file);
+                    fr.addEventListener("load", () => {
+                        // this is to load image on the UI
+                        // .. not related to file upload :)
+                        this.thumbFileURL = fr.result;
+                    });
+                    const imgData = new FormData();
+                    imgData.append("image", this.post.thumbImg);
+                    const filePath = `${Date.now()}-${file.name}`;
+                    const metadata = {
+                        contentType: this.post.thumbImg.type
+                    };
+                    this.post.thumbImgPath = filePath
+                    await this.$fire.storage.ref()
+                        .child('posts')
+                        .child(filePath)
+                        .put(this.post.thumbImg, metadata);
                 }
             } catch (e) {
                 console.error(e);

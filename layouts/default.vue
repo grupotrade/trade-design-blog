@@ -4,11 +4,11 @@
         <LayoutHeader :user="user" />
         <confirm-dialog />
         <snackbar />
-        <v-container fluid class="container-default" :class="($vuetify.breakpoint.xs) ? 'px-0' : ''">
+        <v-container fluid class="pa-0 mt-16 pt-16 mt-lg-0">
             <nuxt />
         </v-container>
         <LayoutFooter />
-        <v-btn class="fab mb-8" :size="$vuetify.breakpoint.xs ? 'small' : 'large'" color="primary" icon to="#top">
+        <v-btn class="fab mb-4" :size="$vuetify.breakpoint.xs ? 'small' : 'large'" color="primary" icon to="#top">
             <v-icon>mdi-arrow-up-thick</v-icon>
         </v-btn>
         <v-btn class="fab whatsapp mb-1" :size="$vuetify.breakpoint.xs ? 'small' : 'large'" icon

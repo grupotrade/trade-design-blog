@@ -1,34 +1,40 @@
 <template>
-    <v-container class="pt-lg-16 px-lg-16">
+    <v-container fluid class="px-0">
         <v-row>
             <v-col>
                 <v-skeleton-loader type="article" :loading="loadingPost">
-                    <article v-if="post">
-                        <v-sheet color="" class="secondary secondary--text lighten-4 pa-3 rounded-xl body-1"
-                            v-if="post.type">
-                            <v-btn to="../" text small rounded color="secondary" class="mr-2">
-                                <v-icon small>mdi-chevron-left</v-icon> Volver
-                            </v-btn> {{ post.type.name }}
-                        </v-sheet>
-                        <header>
-                            <h1 class="py-8 black--text text-center">{{ post.title }}</h1>
-                        </header>
+                    <div v-if="post">
+                        <v-container class="container-default">
+                            <v-sheet class="container-default secondary secondary--text lighten-4 pa-3 rounded-xl body-1"
+                                v-if="post.type">
+                                <v-btn to="../" text small rounded color="secondary" class="mr-2">
+                                    <v-icon small>mdi-chevron-left</v-icon> Volver
+                                </v-btn> {{ post.type.name }}
+                            </v-sheet>
+                        </v-container>
                         <div class="d-flex justify-center">
-                        <v-img :src="$config.storage + 'posts%2F' + post.img + '?alt=media'" class="rounded" height="350px" contain />
+                            <v-img :src="$config.storage + 'posts%2F' + post.img + '?alt=media'" class="rounded mb-6"
+                                contain />
+                        </div>
+                        <v-container class="container-post">
+                            <h1 class="py-12 black--text">{{ post.title }}</h1>
+                            <p class="py-3 semi" v-html="post.resume" v-if="post.resume != ''"></p>
+                            <p class="py-3" v-html="post.content"></p>
+                        </v-container>
                     </div>
-                        <p class="py-3 semi" v-html="post.resume"></p>
-                        <p class="py-3" v-html="post.content"></p>
-                    </article>
                 </v-skeleton-loader>
             </v-col>
             <v-col cols="12">
                 <v-skeleton-loader type="card" :loading="loadingRelated" v-if="relatedPosts.length > 0">
-                    <h4 class="mt-4 mb-6 primary--text">Artículos relacionados</h4>
-                    <v-row>
-                        <v-col v-for="post in relatedPosts" :key="post.id" cols="6" lg="4">
-            <PostsPostCard :post="post" @navigate="navigatePost(post)" />
-        </v-col>
-                    </v-row>
+                    <v-container>
+                        <h2 class="mt-6 mb-10">Artículos relacionados</h2>
+
+                        <v-row>
+                            <v-col v-for="post in relatedPosts" :key="post.id" cols="12" lg="4">
+                                <PostsPostCard :post="post" :related="true" @navigate="navigatePost(post)" />
+                            </v-col>
+                        </v-row>
+                    </v-container>
                 </v-skeleton-loader>
             </v-col>
         </v-row>

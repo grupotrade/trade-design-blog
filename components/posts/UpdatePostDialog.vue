@@ -43,15 +43,29 @@
                     <client-only>
                         <VueEditor v-model="postEditable.content" @text-change="updateEditorContent" />
                     </client-only>
-                    <h4 class="body-1 my-2">Imagen</h4>
                     <v-row>
                         <v-col>
-                            <v-file-input v-model="postEditable.img" :placeholder="$t('upload')" @change="fileInput"
+                            <h4 class="body-1 my-2">Imagen artículo</h4>
+                            <v-file-input dense v-model="postEditable.img" :placeholder="$t('upload')" @change="fileInput"
                                 outlined :disabled="processingImg">
                                 <template v-slot:append-outer>
                                     <v-progress-circular v-if="processingImg" color="grey" indeterminate small />
                                 </template>
                             </v-file-input>
+                            <v-img :src="$config.storage + 'posts%2F' + postEditable.img + '?alt=media'" v-if="postEditable.img" height="250px" contain class="mt-4">
+                            </v-img>
+                        </v-col>
+                        <v-col>
+                            <h4 class="body-1 my-2">Miniatura</h4>
+                            <v-file-input dense v-model="postEditable.thumbImg" :placeholder="$t('upload')" outlined @change="thumbFileInput"
+                                :disabled="processingImg">
+                                <template v-slot:append-outer>
+                                    <v-progress-circular v-if="processingImg" color="grey" indeterminate small />
+                                </template>
+                            </v-file-input>
+                            <v-img :src="$config.storage + 'posts%2F' + postEditable.thumbImg + '?alt=media'" v-if="postEditable.thumbImg" height="250px" contain class="mt-4">
+                            </v-img>
+
                         </v-col>
                     </v-row>
                     <v-dialog v-model="saving" width="300px">
@@ -103,6 +117,7 @@ export default {
             editPostForm: false,
             postEditable: {},
             fileURL: null,
+            thumbfileURL: null,
             progress: 0,
             newImagePath: null,
             rules: {
@@ -187,7 +202,8 @@ export default {
                     content: this.postEditable.content,
                     resume: this.postEditable.resume,
                     type: this.postEditable.type,
-                    img: this.postEditable.imgPath
+                    img: this.postEditable.imgPath,
+                    thumbImg: this.postEditable.thumbImgPath || null
                 })
                 .then(() => {
                     this.saving = false
@@ -199,6 +215,7 @@ export default {
                         resume: "",
                         content: "",
                         img: null,
+                        thumbImg: null,
                     }
                     this.show = false;
                 })
@@ -228,6 +245,35 @@ export default {
                         .child('posts')
                         .child(filePath)
                         .put(this.postEditable.img, metadata);
+                }
+            } catch (e) {
+                console.error(e);
+            } finally {
+                this.processingImg = false;
+            }
+        },
+        async thumbFileInput(file) {
+            try {
+                if (file && file.name) {
+                    this.processingImg = true;
+                    const fr = new FileReader();
+                    fr.readAsDataURL(file);
+                    fr.addEventListener("load", () => {
+                        // this is to load image on the UI
+                        // .. not related to file upload :)
+                        this.thumbFileURL = fr.result;
+                    });
+                    const imgData = new FormData();
+                    imgData.append("image", this.postEditable.thumbImg);
+                    const filePath = `${Date.now()}-${file.name}`;
+                    const metadata = {
+                        contentType: this.postEditable.thumbImg.type
+                    };
+                    this.postEditable.thumbImgPath = filePath
+                    await this.$fire.storage.ref()
+                        .child('posts')
+                        .child(filePath)
+                        .put(this.postEditable.thumbImg, metadata);
                 }
             } catch (e) {
                 console.error(e);

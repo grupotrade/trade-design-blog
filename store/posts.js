@@ -70,6 +70,7 @@ export const actions = {
                 data.id = doc.id;
                 result.push(data);
               });
+              console.log(result)
               commit('setPosts', result);
               resolve(result);
             })
