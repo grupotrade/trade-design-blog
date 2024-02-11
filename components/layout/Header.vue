@@ -5,7 +5,7 @@
             <v-sheet color="transparent" class="pa-3">
                 <!-- <v-btn text class="white--text" href="https://trade-design.com.ar/s" block>Quienes somos</v-btn> -->
                 <v-btn text class="white--text px-8" href="https://trade-design.com.ar/#viajes" block>Blog</v-btn>
-                <v-btn text class="white--text px-8" href="https://trade-design.com.ar/#plataforma" block>TradeHouse</v-btn>
+                <v-btn text class="white--text px-8" href="https://tradehouse.com.ar/" block>TradeHouse</v-btn>
                 <v-btn outlined rounded color="white" class="px-8"
                     href="https://api.whatsapp.com/send?phone=5491126117588&text=Hola,%20estoy%20visitando%20Trade%20Design,%20me%20gustar%C3%ADa%20saber%20m%C3%A1s%20acerca%20de%20sus%20productos%20y%20servicios"
                     target="_blank" block>Contacto</v-btn>
@@ -60,7 +60,7 @@
                         <!-- <v-btn text class="white--text" href="https://trade-design.com.ar/s">Quienes somos</v-btn> -->
                         <v-btn text class="white--text px-8" href="https://trade-design.com.ar/#viajes">Blog</v-btn>
                         <v-btn text class="white--text px-8"
-                            href="https://trade-design.com.ar/#plataforma">TradeHouse</v-btn>
+                            href="https://tradehouse.com.ar/">TradeHouse</v-btn>
                         <v-btn outlined rounded color="white" class="px-8"
                             href="https://api.whatsapp.com/send?phone=5491126117588&text=Hola,%20estoy%20visitando%20Trade%20Design,%20me%20gustar%C3%ADa%20saber%20m%C3%A1s%20acerca%20de%20sus%20productos%20y%20servicios"
                             target="_blank">Contacto</v-btn>

@@ -4,7 +4,7 @@
         <LayoutHeader :user="user" />
         <confirm-dialog />
         <snackbar />
-        <v-container fluid class="pa-0 mt-16 pt-16 mt-lg-0">
+        <v-container fluid class="pa-0 pt-14 pt-lg-16">
             <nuxt />
         </v-container>
         <LayoutFooter />
